@@ -1,0 +1,228 @@
+﻿
+@page "/produtos"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using GestaoLoja.Entities
+@using GestaoLoja.Data
+@using Microsoft.AspNetCore.Identity
+
+@rendermode InteractiveServer
+
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject IJSRuntime JS
+
+@attribute [Authorize(Roles = "Admin, Funcionario")]
+
+@implements IAsyncDisposable
+
+<PageTitle>Listagem</PageTitle>
+
+<h1>Listagem de Produtos</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <p class="mb-0">
+        <a title="Novo registo!" href="produtos/create">
+            <img src="/img/novo.png" style="height:50px" />
+        </a>
+    </p>
+    <div class="small text-muted">
+        <span class="badge bg-success me-1">Visível</span> = Ativo na Loja | 
+        <span class="badge bg-secondary">Oculto</span> = Pendente/Inativo
+    </div>
+</div>
+
+<QuickGrid Items="@produtosQueryable" @ref="refgrid" Pagination="@pagination" Class="table table-striped align-middle">
+    
+    <TemplateColumn Context="produto" Title="Imagem">
+        @if (produto.Imagem is not null)
+        {
+            <img title="Imagem Actual: @produto.UrlImagem" id="imagePreview" class="img-thumbnail mt-2" 
+                 src="data:image/*;base64,@(Convert.ToBase64String(produto.Imagem))" style="width:80px">
+        }
+        else
+        {
+            <img id="imagePreview" class="img-thumbnail mt-2" src="img/noproductstrans.png" style="width:80px;">
+        }
+    </TemplateColumn>
+
+    <PropertyColumn Property="produto => produto.Nome" Sortable="true">
+        <ColumnOptions>
+            <div class="search-box p-2">
+                <input type="search" class="form-control form-control-sm" autofocus @onchange="PesquisaProduto" placeholder="Pesquisar nome..." />
+            </div>
+        </ColumnOptions>
+    </PropertyColumn>
+    
+    <PropertyColumn Property="produto => produto.Detalhe" Title="Detalhe" />
+
+    <PropertyColumn Title="Preço (€)" Property="produto => produto.Preco" Format="F2" Sortable="true" />
+
+    <PropertyColumn Title="Stock" Property="produto => produto.EmStock" Sortable="true" />
+
+    <PropertyColumn Title="Categoria" Property="produto => produto.categoria.Nome" Sortable="true" />
+
+    <TemplateColumn Title="Estado" Sortable="true" SortBy="@sortDisponivel">
+        @if (context.Disponivel)
+        {
+            <span class="badge bg-success">Visível</span>
+        }
+        else
+        {
+            <span class="badge bg-secondary">Oculto/Pendente</span>
+        }
+    </TemplateColumn>
+
+    <TemplateColumn Context="produto" Title="Ações">
+        <div class="d-flex gap-2">
+            
+            @if (produto.Disponivel)
+            {
+                <button class="btn btn-sm btn-outline-warning" title="Ocultar da Loja" @onclick="() => AlternarDisponibilidade(produto)">
+                    Ocultar
+                    </button>
+            }
+            else
+            {
+                <button class="btn btn-sm btn-outline-success" title="Publicar na Loja" @onclick="() => AlternarDisponibilidade(produto)">
+                    Publicar
+                    </button>
+            }
+
+            <a title="Editar" href="@($"produtos/edit?id={produto.Id}")">
+                <img title="Editar" src="/img/editicon.png" style="height:30px" />
+            </a>
+            <a title="Detalhes" href="@($"produtos/details?id={produto.Id}")">
+                <img title="Detalhes" src="/img/detailsicon.png" style="height:30px" />
+            </a>
+            <a title="Apagar" href="@($"produtos/delete?id={produto.Id}")">
+                <img title="Apagar" src="/img/deleteicon.png" style="height:30px" />
+            </a>
+        </div>
+    </TemplateColumn>
+
+</QuickGrid>
+
+<div class="d-flex align-items-center mt-3">
+    <div class="page-size-chooser me-3">
+        Produtos por página:
+        <select @bind="@pagination.ItemsPerPage" class="form-select d-inline-block w-auto">
+            <option>5</option>
+            <option>10</option>
+            <option>15</option>
+        </select>
+    </div>
+    <Paginator State="@pagination" />
+</div>
+
+@code {
+
+    QuickGrid<Produto>? refgrid;
+
+    //Pagination
+    PaginationState pagination = new PaginationState { ItemsPerPage = 5 };
+
+    List<Produto> produtosList = new();
+    IQueryable<Produto>? produtosQueryable;
+
+    // Ordenação personalizada para o booleano Disponivel
+    GridSort<Produto> sortDisponivel = GridSort<Produto>.ByAscending(p => p.Disponivel);
+
+    private ApplicationDbContext context = default!;
+
+    protected override async void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+        produtosQueryable = Enumerable.Empty<Produto>().AsQueryable();
+
+        CarregaProdutos();
+        ConvertListToQueryable();
+    }
+
+    private IList<Produto> CarregaProdutos()
+    {
+        produtosList = context.Produtos
+                    .Include("categoria")
+                    .Include("modoentrega")
+                    .OrderBy(x => x.categoria.Nome)
+                    .ThenBy(a => a.Nome)
+                    .ToList();
+        return produtosList;
+    }
+
+    // Load data from List to the Queryable container
+    private void ConvertListToQueryable()
+    {
+        produtosQueryable = Enumerable.Empty<Produto>().AsQueryable();
+
+        if (produtosList is null) return;
+        foreach (var produto in produtosList.OrderBy(_ => _.Id))
+        {
+            produtosQueryable = produtosQueryable.Concat(new[] { produto }.AsQueryable());
+        }
+        // pagination.TotalItemCountChanged += (sender, eventArgs) => StateHasChanged();
+    }
+
+    //Pesquisa Produto
+    void PesquisaProduto(ChangeEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(e.Value!.ToString()))
+        {
+            var result = produtosList // Pesquisa na lista carregada em vez do queryable vazio
+                .Where(c => c.Nome!.Contains(e.Value!.ToString()!, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+            
+            produtosQueryable = Enumerable.Empty<Produto>().AsQueryable();
+            
+            if (result.Count == 0) return;
+
+            if (result.Any())
+            {
+                foreach (var produto in result.OrderBy(_ => _.Id))
+                    produtosQueryable = produtosQueryable.Concat(new[] { produto }.AsQueryable());
+            }
+        }
+        else
+        {
+            // Se limpar a pesquisa, repõe tudo
+            ConvertListToQueryable();
+        }
+    }
+
+    // LÓGICA DE NEGÓCIO: Mudar estado respeitando o preço
+    private async Task AlternarDisponibilidade(Produto p)
+    {
+        // Obtemos o produto fresco da BD para garantir consistência
+        var prodDb = await context.Produtos.FindAsync(p.Id);
+        
+        if (prodDb != null)
+        {
+            if (prodDb.Disponivel)
+            {
+                // Se está visível, pode esconder sempre
+                prodDb.Disponivel = false;
+            }
+            else
+            {
+                // REGRA: Só ativa se o Preço for positivo
+                if (prodDb.Preco <= 0)
+                {
+                    await JS.InvokeVoidAsync("alert", "Não é possível publicar um produto com Preço 0€. Por favor edite o produto e defina o preço.");
+                    return;
+                }
+                prodDb.Disponivel = true;
+            }
+
+            await context.SaveChangesAsync();
+
+            // Recarregar os dados para atualizar a tabela visualmente
+            CarregaProdutos();
+            ConvertListToQueryable();
+            
+            // Força a UI a atualizar
+            StateHasChanged();
+        }
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

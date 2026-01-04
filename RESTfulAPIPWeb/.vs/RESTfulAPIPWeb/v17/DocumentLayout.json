@@ -1,0 +1,224 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\restfulapipweb.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\restfulapipweb.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\entities\\favorito.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\entities\\favorito.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\controllers\\favoritoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\controllers\\favoritoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\entities\\carrinhocompra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\entities\\carrinhocompra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\entities\\encomendaitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\entities\\encomendaitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\entities\\encomenda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\entities\\encomenda.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\controllers\\encomendascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\controllers\\encomendascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\data\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\data\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\entities\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\entities\\produto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|c:\\users\\duart\\downloads\\tp_pweb\\tp_pweb\\restfulapipweb\\restfulapipweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0EFC1A11-B091-4B11-B253-4D08B41571F1}|RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj|solutionrelative:restfulapipweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RESTfulAPIPWeb",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj",
+              "RelativeToolTip": "RESTfulAPIPWeb\\RESTfulAPIPWeb.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-01-04T20:15:18.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Favorito.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\Favorito.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Entities\\Favorito.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\Favorito.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Entities\\Favorito.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:13:20.338Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "EncomendaItem.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\EncomendaItem.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Entities\\EncomendaItem.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\EncomendaItem.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Entities\\EncomendaItem.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAIwCkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:10:37.617Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Encomenda.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\Encomenda.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Entities\\Encomenda.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\Encomenda.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Entities\\Encomenda.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAIwC0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:10:13.137Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CarrinhoCompra.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\CarrinhoCompra.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Entities\\CarrinhoCompra.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\CarrinhoCompra.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Entities\\CarrinhoCompra.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:09:39.299Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FavoritosController.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Controllers\\FavoritosController.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Controllers\\FavoritosController.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Controllers\\FavoritosController.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Controllers\\FavoritosController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAtwCoAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:03:17.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "EncomendasController.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Controllers\\EncomendasController.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Controllers\\EncomendasController.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Controllers\\EncomendasController.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Controllers\\EncomendasController.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACEAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:02:41.92Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:01:47.085Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Produto.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\Produto.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Entities\\Produto.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Entities\\Produto.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Entities\\Produto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:01:23.602Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Data\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Data\\ApplicationUser.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Data\\ApplicationUser.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Data\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T20:00:55.587Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Program.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Program.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Program.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-04T19:52:49.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "RESTfulAPIPWeb\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\duart\\Downloads\\TP_PWEB\\TP_PWEB\\RESTfulAPIPWeb\\RESTfulAPIPWeb\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "RESTfulAPIPWeb\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-20T16:16:51.022Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+﻿@page "/users/edit/{UserId}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using GestaoLoja.Data
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = "Admin, Funcionario")]
+
+<PageTitle>Gerir Utilizador</PageTitle>
+
+<div class="container mt-4">
+    <h3>Gerir Permissões</h3>
+
+    @if (userToEdit is null)
+    {
+        <p>A carregar...</p>
+    }
+    else if (acessoProibido)
+    {
+        // --- PROTEÇÃO VISUAL ---
+        <div class="alert alert-danger shadow-sm">
+            <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Acesso Negado</h4>
+            <p>Não tens permissão para editar um perfil de <strong>Administrador</strong>.</p>
+            <hr>
+            <a href="/users" class="btn btn-outline-danger">Voltar à lista</a>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                Editando: <strong>@userToEdit.Email</strong>
+            </div>
+            <div class="card-body">
+                <EditForm Model="Input" OnValidSubmit="GravarAlteracoes" FormName="permissoesUser">
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-4 p-3 border rounded border-danger bg-danger-subtle">
+                        <h5 class="text-danger fw-bold">Acesso Interno</h5>
+                        <div class="form-check form-switch">
+                            <InputCheckbox class="form-check-input"
+                                           @bind-Value="Input.IsFuncionario"
+                                           disabled="@(!souAdmin)"
+                                           id="chkFunc" />
+                            <label class="form-check-label" for="chkFunc">
+                                Cargo de <strong>Funcionário</strong>
+                            </label>
+                        </div>
+                        @if (!souAdmin)
+                        {
+                            <small class="text-muted"><i class="bi bi-lock-fill"></i> Reservado a Administradores.</small>
+                        }
+                    </div>
+
+                    <div class="mb-4 p-3 border rounded border-primary bg-primary-subtle">
+                        <h5 class="text-primary fw-bold">Perfis Externos</h5>
+                        <div class="form-check">
+                            <InputCheckbox class="form-check-input" @bind-Value="Input.IsCliente" id="chkCli" />
+                            <label class="form-check-label" for="chkCli">Perfil de Cliente</label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <InputCheckbox class="form-check-input" @bind-Value="Input.IsFornecedor" id="chkForn" />
+                            <label class="form-check-label" for="chkForn">Perfil de Fornecedor</label>
+                        </div>
+                    </div>
+
+                    @if (Input.IsCliente || Input.IsFornecedor)
+                    {
+                        <div class="mb-4 p-3 border rounded border-warning bg-warning-subtle">
+                            <h5 class="text-dark fw-bold">Estado da Conta</h5>
+                            <label class="form-label">Situação Atual:</label>
+                            <InputSelect class="form-select w-auto" @bind-Value="Input.EstadoSelecionado">
+                                <option value="Pendente">Pendente (Aguarda Aprovação)</option>
+                                <option value="Activo">Activo (Aprovado)</option>
+                            </InputSelect>
+                        </div>
+                    }
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">Gravar Alterações</button>
+                        <a href="/users" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string UserId { get; set; }
+
+    [SupplyParameterFromForm]
+    public InputModel Input { get; set; }
+
+    private ApplicationUser? userToEdit;
+    private bool souAdmin = false;
+
+    // Variável para controlar o bloqueio
+    private bool acessoProibido = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userToEdit = await UserManager.FindByIdAsync(UserId);
+
+        if (userToEdit != null)
+        {
+            // 1. Quem sou eu?
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            souAdmin = authState.User.IsInRole(Roles.Admin);
+
+            // 2. Quem é o alvo?
+            var alvoEAdmin = await UserManager.IsInRoleAsync(userToEdit, Roles.Admin);
+
+            // 3. REGRA DE OURO: Se eu NÃO sou Admin e o alvo É Admin -> BLOQUEAR
+            if (!souAdmin && alvoEAdmin)
+            {
+                acessoProibido = true;
+                return; // Pára a execução aqui, não preenche o Input
+            }
+
+            // Preenche o formulário se tiver acesso
+            if (Input is null)
+            {
+                Input = new InputModel
+                {
+                    IsFuncionario = await UserManager.IsInRoleAsync(userToEdit, Roles.Funcionario),
+                    IsCliente = await UserManager.IsInRoleAsync(userToEdit, Roles.Cliente),
+                    IsFornecedor = await UserManager.IsInRoleAsync(userToEdit, Roles.Fornecedor),
+                    EstadoSelecionado = userToEdit.Estado ?? "Pendente"
+                };
+            }
+        }
+    }
+
+    private async Task GravarAlteracoes()
+    {
+        if (userToEdit is null) return;
+
+        // --- SEGURANÇA FINAL (Backend) ---
+        // Verificar novamente antes de gravar, caso alguém tenha aldrabado o HTML
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        bool souMesmoAdmin = authState.User.IsInRole(Roles.Admin);
+        bool alvoEAdmin = await UserManager.IsInRoleAsync(userToEdit, Roles.Admin);
+
+        if (!souMesmoAdmin && alvoEAdmin)
+        {
+            // Tentativa de ataque: Funcionário a tentar gravar dados num Admin
+            acessoProibido = true;
+            return;
+        }
+
+        // --- REGRA 1: Só Admin gere Funcionários ---
+        bool eraFuncionario = await UserManager.IsInRoleAsync(userToEdit, Roles.Funcionario);
+        if (Input.IsFuncionario != eraFuncionario)
+        {
+            if (souAdmin)
+            {
+                if (Input.IsFuncionario) await UserManager.AddToRoleAsync(userToEdit, Roles.Funcionario);
+                else await UserManager.RemoveFromRoleAsync(userToEdit, Roles.Funcionario);
+            }
+        }
+
+        // --- REGRA 2: Clientes e Fornecedores ---
+        // Cliente
+        bool eraCliente = await UserManager.IsInRoleAsync(userToEdit, Roles.Cliente);
+        if (Input.IsCliente && !eraCliente) await UserManager.AddToRoleAsync(userToEdit, Roles.Cliente);
+        else if (!Input.IsCliente && eraCliente) await UserManager.RemoveFromRoleAsync(userToEdit, Roles.Cliente);
+
+        // Fornecedor
+        bool eraForn = await UserManager.IsInRoleAsync(userToEdit, Roles.Fornecedor);
+        if (Input.IsFornecedor && !eraForn) await UserManager.AddToRoleAsync(userToEdit, Roles.Fornecedor);
+        else if (!Input.IsFornecedor && eraForn) await UserManager.RemoveFromRoleAsync(userToEdit, Roles.Fornecedor);
+
+        // --- REGRA 3: Estado ---
+        if (userToEdit.Estado != Input.EstadoSelecionado)
+        {
+            userToEdit.Estado = Input.EstadoSelecionado;
+            await UserManager.UpdateAsync(userToEdit);
+        }
+
+        NavManager.NavigateTo("/users");
+    }
+
+    public class InputModel
+    {
+        public bool IsFuncionario { get; set; }
+        public bool IsCliente { get; set; }
+        public bool IsFornecedor { get; set; }
+        public string EstadoSelecionado { get; set; } = "Pendente";
+    }
+}

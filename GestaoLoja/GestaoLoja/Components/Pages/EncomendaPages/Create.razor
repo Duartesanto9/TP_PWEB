@@ -1,0 +1,97 @@
+﻿@page "/encomenda/create"
+@attribute [Authorize(Roles = "Admin, Funcionario")]
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using GestaoLoja.Entities
+@using GestaoLoja.Data
+@inject IDbContextFactory<GestaoLoja.Data.ApplicationDbContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Criar </PageTitle>
+
+<h1>Create</h1>
+
+<h2>Encomenda</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Encomenda" OnValidSubmit="AddEncomenda" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="data" class="form-label">Data:</label> 
+                <InputDate id="data" @bind-Value="Encomenda.Data" class="form-control" /> 
+                <ValidationMessage For="() => Encomenda.Data" class="text-danger" /> 
+            </div>        
+           @*  <div class="mb-3">
+                <label for="estado" class="form-label">Estado:</label> 
+                <InputText id="estado" @bind-Value="Encomenda.Estado" class="form-control" /> 
+                <ValidationMessage For="() => Encomenda.Estado" class="text-danger" /> 
+            </div>       *@  
+            <div class="mb-3">
+                <label for="pagamentoefetuado" class="form-label">pagamentoEfetuado:</label> 
+                <InputCheckbox id="pagamentoefetuado" @bind-Value="Encomenda.pagamentoEfetuado" class="form-check-input" /> 
+                <ValidationMessage For="() => Encomenda.pagamentoEfetuado" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="pagamentoconfirmadointernamente" class="form-label">pagamentoConfirmadoInternamente:</label> 
+                <InputCheckbox id="pagamentoconfirmadointernamente" @bind-Value="Encomenda.pagamentoConfirmadoInternamente" class="form-check-input" /> 
+                <ValidationMessage For="() => Encomenda.pagamentoConfirmadoInternamente" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <span class="text-danger">*</span>
+                <label for="rua" class="form-label">Rua:</label> 
+                <InputText id="rua" @bind-Value="Encomenda.Rua" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Encomenda.Rua" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <span class="text-danger">*</span>
+                <label for="localidade1" class="form-label">Localidade1:</label> 
+                <InputText id="localidade1" @bind-Value="Encomenda.Localidade1" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Encomenda.Localidade1" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <span class="text-danger">*</span>
+                <label for="codigopostal" class="form-label">CodigoPostal:</label> 
+                <InputText id="codigopostal" @bind-Value="Encomenda.CodigoPostal" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Encomenda.CodigoPostal" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <span class="text-danger">*</span>
+                <label for="cidade" class="form-label">Cidade:</label> 
+                <InputText id="cidade" @bind-Value="Encomenda.Cidade" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Encomenda.Cidade" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <span class="text-danger">*</span>
+                <label for="pais" class="form-label">Pais:</label> 
+                <InputText id="pais" @bind-Value="Encomenda.Pais" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => Encomenda.Pais" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="clienteid" class="form-label">ClienteId:</label> 
+                <InputText id="clienteid" @bind-Value="Encomenda.ClienteId" class="form-control" /> 
+                <ValidationMessage For="() => Encomenda.ClienteId" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/encomenda">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Encomenda Encomenda { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddEncomenda()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Encomendas.Add(Encomenda);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/encomenda");
+    }
+}

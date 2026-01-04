@@ -1,0 +1,70 @@
+﻿@page "/users"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+@using GestaoLoja.Data
+@inject UserManager<ApplicationUser> UserManager
+
+@* Bloqueia quem não é patrão nem funcionário *@
+@attribute [Authorize(Roles = "Admin, Funcionario")]
+
+<PageTitle>Gestão de Utilizadores</PageTitle>
+
+<div class="container mt-4">
+    <h3>Gestão de Utilizadores</h3>
+    <p class="text-muted">Aqui podes gerir permissões e ativar contas.</p>
+
+    @if (users == null)
+    {
+        <p><em>A carregar...</em></p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Email</th>
+                        <th>Nome</th>
+                        <th>Estado</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in users)
+                    {
+                        <tr>
+                            <td>@user.Email</td>
+                            <td>@user.Nome @user.Apelido</td>
+                            <td>
+                                @if (user.Estado == "Activo")
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">@(user.Estado ?? "Pendente")</span>
+                                }
+                            </td>
+                            <td>
+                                <a href="/users/edit/@user.Id" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-pencil"></i> Gerir
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@code {
+    private List<ApplicationUser>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Vai buscar toda a gente à base de dados para listar
+        users = await UserManager.Users.ToListAsync();
+    }
+}

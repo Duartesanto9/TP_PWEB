@@ -1,0 +1,294 @@
+﻿
+@page "/produtos/edit"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using GestaoLoja.Entities
+@using GestaoLoja.Data
+@inject IDbContextFactory<GestaoLoja.Data.ApplicationDbContext> DbFactory
+@inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Admin, Funcionario")]
+
+<PageTitle>Editar Produto</PageTitle>
+
+<h1>Editar Produto</h1>
+
+<hr />
+@if (produto is null)
+{
+    <p><em>Carregando...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <EditForm method="post" Model="produto" OnValidSubmit="UpdateProduto" enctype="multipart/form-data" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="produto.Id" value="@produto.Id" />
+
+                <div class="mb-3 text-center">
+                    @if (@produto.Imagem != null && @produto.Imagem.Length > 0)
+                    {
+                        <img title="Imagem Actual: @produto.UrlImagem" id="imagePreview" class="img-thumbnail mt-2" src="data:image/*;base64,@(Convert.ToBase64String(produto.Imagem))" style="max-height: 200px">
+                    }
+                    else
+                    {
+                        <img id="imagePreview" class="img-thumbnail mt-2" src="img/noproductstrans.png" style="max-height: 200px;">
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome:</label>
+                    <InputText id="nome" @bind-Value="produto.Nome" class="form-control" />
+                    <ValidationMessage For="() => produto.Nome" class="text-danger" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="detalhe" class="form-label">Detalhe:</label>
+                    <InputText id="detalhe" @bind-Value="produto.Detalhe" class="form-control" />
+                    <ValidationMessage For="() => produto.Detalhe" class="text-danger" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="origem" class="form-label">Origem:</label>
+                    <InputText id="origem" @bind-Value="produto.Origem" class="form-control" />
+                    <ValidationMessage For="() => produto.Origem" class="text-danger" />
+                </div>
+
+                <div class="card p-3 mb-3 bg-light border-primary">
+                    <h6 class="text-primary fw-bold"><i class="bi bi-calculator"></i> Definição de Preço</h6>
+                    <small class="text-muted mb-2 d-block">O Preço Final é calculado automaticamente.</small>
+
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label class="form-label">Base (€)</label>
+                            <InputNumber @bind-Value="produto.Precobase" @onblur="CalcularFinal" class="form-control" step="0.01" placeholder="0.00" />
+                            <ValidationMessage For="() => produto.Precobase" class="text-danger" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Margem (%)</label>
+                            <InputNumber @bind-Value="produto.margem" @onblur="CalcularFinal" class="form-control" step="0.1" placeholder="%" />
+                            <ValidationMessage For="() => produto.margem" class="text-danger" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Preço Final (€)</label>
+                            <InputNumber id="preco" 
+                                         @bind-Value="produto.Preco" 
+                                         class="form-control fw-bold bg-secondary-subtle" 
+                                         step="0.01" 
+                                         readonly />
+                            <ValidationMessage For="() => produto.Preco" class="text-danger" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="emstock" class="form-label">Stock:</label>
+                    <InputNumber id="emstock" @bind-Value="produto.EmStock" class="form-control" />
+                    <ValidationMessage For="() => produto.EmStock" class="text-danger" />
+                </div>
+
+                <div class="mb-3 p-2 border rounded">
+                    <label class="form-label fw-bold">Estado do Produto:</label>
+                    <InputSelect @bind-Value="produto.Disponivel" class="form-select">
+                        <option value="false">Pendente / Oculto</option>
+                        <option value="true">Activo (Visível na Loja)</option>
+                    </InputSelect>
+                    <small class="text-muted">Nota: O estado "Activo" requer um preço final válido.</small>
+                    <ValidationMessage For="() => produto.Disponivel" class="text-danger" />
+
+                    <div class="form-check mt-2">
+                        <InputCheckbox id="maisvendido" @bind-Value="produto.MaisVendido" class="form-check-input" />
+                        <label for="maisvendido" class="form-check-label">Marcar como "Mais Vendido"</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Disponibilização Actual: <strong>@modoActual</strong></label>
+                    <InputSelect id="modosEntrega" class="form-select" @bind-Value="@produto.ModoEntregaId">
+                        <option value="-1">-- Selecione a Disponibilização --</option>
+                        @foreach (var item in selModo)
+                        {
+                            <option value="@item.Id ">@item.Nome</option>
+                        }
+                    </InputSelect>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Categoria Actual: <strong>@catActual</strong></label>
+                    <InputSelect id="categoria" class="form-select" @bind-Value="@produto.CategoriaId">
+                        <option value="-1">-- Selecione a Categoria --</option>
+                        @foreach (var item in selCategorias)
+                        {
+                            <option value="@item.Id ">@item.Nome</option>
+                        }
+                    </InputSelect>
+                </div>
+
+                <div class="mb-3">
+                    <label for="imageUri" class="form-label">Alterar Imagem:</label>
+                    <input id="imageUri"
+                           type="file"
+                           name="Produto.ImageFile"
+                           class="form-control"
+                           accept=".png, .jpg, .jpeg"
+                           onchange="document.getElementById('imagePreview').src = window.URL.createObjectURL(this.files[0])" />
+                </div>
+
+                <div class="d-flex gap-2 mt-4 mb-5">
+                    <button type="submit" class="btn btn-primary">
+                        <img src="/img/saveicon.png" style="height:24px" class="me-1" /> Gravar Alterações
+                    </button>
+                    <a href="/produtos" class="btn btn-outline-secondary">
+                        <img src="/img/backicon.png" style="height:24px" class="me-1" /> Voltar
+                    </a>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    public Produto? produto { get; set; }
+
+    List<Categoria> selCategorias = new List<Categoria>();
+    List<ModoEntrega> selModo = new();
+
+    public static string? modoActual;
+    public static string? catActual;
+    public static string? uriActual;
+    public static int? modoActualId;
+    public static int catActualId;
+    public static byte[]? imgActual { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+
+        produto ??= await context.Produtos.Include("categoria").Include("modoentrega")
+        .FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (produto is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+            return;
+        }
+
+        selCategorias = context.Categorias.OrderBy(x => x.Ordem).ToList();
+        selModo = context.ModosEntrega.OrderBy(x => x.Nome).ToList();
+
+        if (produto.ModoEntregaId is not null && produto.ModoEntregaId < 0) produto.ModoEntregaId = modoActualId;
+        if (produto.CategoriaId < 0) produto.CategoriaId = catActualId;
+
+        if (produto.modoentrega is not null) modoActual = produto.modoentrega.Nome;
+        if (produto.categoria is not null) catActual = produto.categoria.Nome;
+
+        if (produto.UrlImagem is not null) uriActual = produto.UrlImagem;
+        if (produto.Imagem is not null) imgActual = produto.Imagem;
+
+        modoActualId = produto.ModoEntregaId;
+        catActualId = produto.CategoriaId;
+    }
+
+    // --- CÁLCULO OBRIGATÓRIO ---
+    private void CalcularFinal()
+    {
+        // Só calcula se houver um preço base definido
+        if (produto!.Precobase.HasValue)
+        {
+            decimal margemValor = produto.margem ?? 0;
+            decimal baseValor = produto.Precobase.Value;
+
+            decimal lucro = baseValor * (margemValor / 100);
+            
+            // Define o preço final automaticamente (não editável na UI)
+            produto.Preco = Math.Round(baseValor + lucro, 2);
+        }
+    }
+    // ----------------------------
+
+    public async Task UpdateProduto()
+    {
+        // Força o cálculo antes de gravar para garantir integridade
+        CalcularFinal();
+
+        if (produto!.Disponivel && (produto.Preco == null || produto.Preco <= 0))
+        {
+            produto.Disponivel = false;
+        }
+
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(produto).State = EntityState.Modified;
+
+        try
+        {
+            if (produto.CategoriaId == 0) produto.CategoriaId = catActualId;
+            if (produto.ModoEntregaId == 0) produto.ModoEntregaId = modoActualId;
+            if (produto.UrlImagem is null) produto.UrlImagem = uriActual;
+            if (produto.Imagem is null) produto.Imagem = imgActual;
+
+            if (produto.ImageFile != null)
+            {
+                if (produto.ImageFile.Length > (200 * 1024))
+                {
+                   // Erro tamanho
+                }
+
+                if (isValidFileType(produto.ImageFile.FileName))
+                {
+                    produto.UrlImagem = produto.ImageFile.FileName;
+                    await deleteImage(produto.Id, produto.UrlImagem);
+
+                    using (var dataStream = new MemoryStream())
+                    {
+                        await produto.ImageFile.CopyToAsync(dataStream);
+                        produto.Imagem = dataStream.ToArray();
+                    }
+                }
+            }
+
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!ProdutoExists(produto!.Id)) NavigationManager.NavigateTo("notfound");
+            else throw;
+        }
+
+        NavigationManager.NavigateTo("/produtos");
+    }
+
+    bool isValidFileType(string fileName)
+    {
+        string ext = Path.GetExtension(fileName);
+        return ext.ToLower() switch
+        {
+            ".jpg" or ".jpeg" or ".png" => true,
+            _ => false
+        };
+    }
+
+    bool ProdutoExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.Produtos.Any(e => e.Id == id);
+    }
+
+    public async Task deleteImage(int id, string image)
+    {
+        try
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Produtos/" + id + "/" + image);
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+        }
+        catch { }
+    }
+}
